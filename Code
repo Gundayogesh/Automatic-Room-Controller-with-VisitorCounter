@@ -1,0 +1,89 @@
+include<LiquidCrystal.h>
+LiquidCrystal lcd(7,6,5,4,3,2);
+#define in 9
+#define out 10
+#define relay 8
+#define relay1 3
+#define relay2 4
+int count=0;
+void IN()
+{
+	count++;
+	lcd.clear();
+    lcd.print("Person In Room:");
+    lcd.setCursor(0,1);
+	lcd.print(count);
+	delay(1000);
+}
+void OUT()
+{
+  count--;
+	lcd.clear();
+    lcd.print("Person In Room:");
+    lcd.setCursor(0,1);
+	lcd.print(count);
+	delay(1000);
+}
+void setup()
+{
+  lcd.begin(16,2);
+  lcd.print("Visitor Counter");
+  delay(2000);
+  pinMode(in, INPUT);
+  pinMode(out, INPUT);
+  pinMode(relay, OUTPUT);
+  pinMode(relay1, OUTPUT);
+  pinMode(relay2, OUTPUT);
+  lcd.clear();
+  lcd.print("Person In Room:");
+  lcd.setCursor(0,1);
+  lcd.print(count);
+}
+void loop()
+{ 
+ 
+  if(digitalRead(in))
+  IN();
+  if(digitalRead(out))
+  OUT(); 
+  if(count<=0)
+  {
+	lcd.clear();
+    digitalWrite(relay, LOW);
+	lcd.clear();
+    lcd.print("Nobody In Room");
+    lcd.setCursor(0,1);
+    lcd.print("Lights  Off");
+	delay(200);
+  }
+   else
+   {
+    digitalWrite(relay, HIGH);
+   }
+	if(count>10)
+  {
+	lcd.clear();
+    digitalWrite(relay1, HIGH);
+	delay(200);
+  }
+   if(count<11)
+  {
+	lcd.clear();
+    digitalWrite(relay1, LOW);
+  	delay(200);
+  }
+  if(count>20)
+  {
+	lcd.clear();
+	digitalWrite(relay2, HIGH);
+	delay(200);
+  }
+   if(count<21)
+  {
+	lcd.clear();
+    digitalWrite(relay2, LOW);
+  	delay(200);
+  }
+  else
+    digitalWrite(relay, HIGH);
+}
